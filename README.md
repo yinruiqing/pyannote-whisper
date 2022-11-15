@@ -65,6 +65,7 @@ please find more details in [this](https://gist.github.com/hbredin/049f2b629700b
 ```python
 import whisper
 from pyannote.audio import Pipeline
+from pyannote.audio import Audio
 from pyannote_whisper.utils import diarize_text
 pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization",
                                     use_auth_token="your/token")
