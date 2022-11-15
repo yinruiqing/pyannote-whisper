@@ -12,7 +12,7 @@ Run ASR and speaker diarization based on whisper and pyannote.audio.
 
 Same as whisper except a new param `diarization`:
 
-     python -m pyannote_whisper.cli.transcribe data/afjiv.wav --model tiny --diarization true
+     python -m pyannote_whisper.cli.transcribe data/afjiv.wav --model tiny --diarization True
 
 ## Python usage
 
