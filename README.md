@@ -59,3 +59,24 @@ for seg, spk, sent in final_result:
 130.96 135.68 SPEAKER_02  What we do today is absolutely wrong.
 135.68 172.00 SPEAKER_02  We don't like it, but we don't like it, our colleagues don't like it, nobody wants it and we're spending a huge amount of money for no reason.
 ```
+## Python usage 2
+please find more details in [this](https://gist.github.com/hbredin/049f2b629700bcea71324d2c1e7f8337) notebook.
+
+```python
+import whisper
+from pyannote.audio import Pipeline
+from pyannote_whisper.utils import diarize_text
+pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization",
+                                    use_auth_token="your/token")
+model = whisper.load_model("tiny.en")
+diarization_result = pipeline("data/afjiv.wav")
+
+from pyannote.audio import Audio
+audio = Audio(sample_rate=16000, mono=True)
+
+for segment, _, speaker in diarization_result.itertracks(yield_label=True):
+    waveform, sample_rate = audio("data/afjiv.wav")
+    text = model.transcribe(waveform.squeeze().numpy())["text"]
+    print(f"{segment.start:.2f}s {segment.end:.2f}s {speaker}: {text}")
+
+```
