@@ -74,9 +74,9 @@ diarization_result = pipeline("data/afjiv.wav")
 
 from pyannote.audio import Audio
 audio = Audio(sample_rate=16000, mono=True)
-
+audio_file = "data/afjiv.wav"
 for segment, _, speaker in diarization_result.itertracks(yield_label=True):
-    waveform, sample_rate = audio("data/afjiv.wav")
+    waveform, sample_rate = audio.crop(audio_file, segment)
     text = model.transcribe(waveform.squeeze().numpy())["text"]
     print(f"{segment.start:.2f}s {segment.end:.2f}s {speaker}: {text}")
 
