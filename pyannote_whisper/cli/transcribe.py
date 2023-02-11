@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
-from whisper.utils import optional_int, optional_float, str2bool, WriteTXT, WriteVTT, WriteSrt
+from whisper.utils import optional_int, optional_float, str2bool, WriteTXT, WriteVTT, WriteSRT
 from whisper.transcribe import transcribe
 
 from pyannote_whisper.utils import diarize_text, write_to_txt
