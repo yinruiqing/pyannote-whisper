@@ -118,7 +118,7 @@ def cli():
         elif output_format == "VTT":
             # save SRT
            with open(os.path.join(output_dir, audio_basename + ".srt"), "w", encoding="utf-8") as file:
-               WriteSRT(output_dir).write_result(result, file=file)
+                WriteSRT(output_dir).write_result(result, file=file)
 
         if diarization:
             diarization_result = pipeline(audio_path)
