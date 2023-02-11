@@ -1,15 +1,17 @@
 import argparse
 import os
 import warnings
+from typing import Literal, cast
 
 import numpy as np
 import torch
-
 from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
-from whisper.utils import optional_int, optional_float, str2bool, WriteTXT, WriteVTT, WriteSRT
 from whisper.transcribe import transcribe
+from whisper.utils import (WriteSRT, WriteTXT, WriteVTT, optional_float,
+                           optional_int, str2bool)
 
 from pyannote_whisper.utils import diarize_text, write_to_txt
+
 
 def cli():
     from whisper import available_models
@@ -62,12 +64,15 @@ def cli():
                         help="number of threads used by torch for CPU inference; supercedes MKL_NUM_THREADS/OMP_NUM_THREADS")
     parser.add_argument("--diarization", type=str2bool, default=True,
                         help="whether to perform speaker diarization; True by default")
+    parser.add_argument("--output_format", type=str, default="TXT", choices=['TXT', 'VTT', 'SRT'],
+                        help="whether to perform speaker diarization; True by default")
 
     args = parser.parse_args().__dict__
     model_name: str = args.pop("model")
     model_dir: str = args.pop("model_dir")
     output_dir: str = args.pop("output_dir")
     device: str = args.pop("device")
+    output_format: Literal['TXT', 'VTT', 'SRT'] = args.pop("output_format")
     os.makedirs(output_dir, exist_ok=True)
 
     if model_name.endswith(".en") and args["language"] not in {"en", "English"}:
@@ -76,7 +81,7 @@ def cli():
                 f"{model_name} is an English-only model but receipted '{args['language']}'; using English instead.")
         args["language"] = "en"
 
-    temperature = args.pop("temperature")
+    temperature = float(args.pop("temperature"))
     temperature_increment_on_fallback = args.pop("temperature_increment_on_fallback")
     if temperature_increment_on_fallback is not None:
         temperature = tuple(np.arange(temperature, 1.0 + 1e-6, temperature_increment_on_fallback))
@@ -97,21 +102,23 @@ def cli():
                                             use_auth_token="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")
 
     for audio_path in args.pop("audio"):
-        result = transcribe(model, audio_path, temperature=temperature, **args)
-
+        result = transcribe(model, audio_path, temperature=temperature,**args)
         audio_basename = os.path.basename(audio_path)
 
-        # save TXT
-        with open(os.path.join(output_dir, audio_basename + ".txt"), "w", encoding="utf-8") as txt:
-            write_txt(result["segments"], file=txt)
+        if output_format == "TXT":
+            # save TXT
+            with open(os.path.join(output_dir, audio_basename + ".txt"), "w", encoding="utf-8") as file:
+                WriteTXT(output_dir).write_result(result, file=file)
 
-        # save VTT
-        with open(os.path.join(output_dir, audio_basename + ".vtt"), "w", encoding="utf-8") as vtt:
-            write_vtt(result["segments"], file=vtt)
+        elif output_format == "VTT":
+            # save VTT
+            with open(os.path.join(output_dir, audio_basename + ".vtt"), "w", encoding="utf-8") as file:
+                WriteVTT(output_dir).write_result(result, file=file)
 
-        # save SRT
-        with open(os.path.join(output_dir, audio_basename + ".srt"), "w", encoding="utf-8") as srt:
-            write_srt(result["segments"], file=srt)
+        elif output_format == "VTT":
+            # save SRT
+           with open(os.path.join(output_dir, audio_basename + ".srt"), "w", encoding="utf-8") as file:
+               WriteSRT(output_dir).write_result(result, file=file)
 
         if diarization:
             diarization_result = pipeline(audio_path)
