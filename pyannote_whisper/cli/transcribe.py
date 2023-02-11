@@ -65,7 +65,7 @@ def cli():
     parser.add_argument("--diarization", type=str2bool, default=True,
                         help="whether to perform speaker diarization; True by default")
     parser.add_argument("--output_format", type=str, default="TXT", choices=['TXT', 'VTT', 'SRT'],
-                        help="whether to perform speaker diarization; True by default")
+                        help="output format; TXT by default")
 
     args = parser.parse_args().__dict__
     model_name: str = args.pop("model")
