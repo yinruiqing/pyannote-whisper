@@ -1,1 +1,6 @@
-
+numpy
+torch
+torchvision
+openai-whisper
+pyannote.audio
+sndfile
