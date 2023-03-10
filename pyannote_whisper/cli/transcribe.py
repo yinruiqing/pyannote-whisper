@@ -115,7 +115,7 @@ def cli():
             with open(os.path.join(output_dir, audio_basename + ".vtt"), "w", encoding="utf-8") as file:
                 WriteVTT(output_dir).write_result(result, file=file)
 
-        elif output_format == "VTT":
+        elif output_format == "SRT":
             # save SRT
            with open(os.path.join(output_dir, audio_basename + ".srt"), "w", encoding="utf-8") as file:
                 WriteSRT(output_dir).write_result(result, file=file)
