@@ -81,3 +81,27 @@ for segment, _, speaker in diarization_result.itertracks(yield_label=True):
     print(f"{segment.start:.2f}s {segment.end:.2f}s {speaker}: {text}")
 
 ```
+## Meeting summary from chatgpt
+
+```
+summarize the following words: SPEAKER_00  I think if you're a leader and you don't understand the terms that you're using, that's probably the first start.
+SPEAKER_00  It's really important that as a leader in the organisation you understand what digitisation means.
+SPEAKER_00  You take the time to read widely in the sector.
+SPEAKER_00  There are a lot of really good books, Kevin Kelly, who started Wired magazine has written a great book on various technologies.
+...
+```
+```
+Leaders need to understand the terms and technologies of digitization in order to separate hype from hope and apply it effectively to their business. Becoming data-driven and collaborating with technology vendors can help organizations achieve their desired outcomes. Procurement processes need to be fundamentally rethought to improve functionality and eliminate unnecessary spending.
+```
+
+```
+summarize the opinions of different speaker
+```
+
+```
+Speaker 00 emphasizes the importance of leaders understanding digitization terms and technologies to apply them effectively to their business. 
+Speaker 01 suggests that taking control of spend data is a crucial first step in digital transformation. 
+Speaker 02 believes that procurement processes need to be rethought to improve functionality and eliminate unnecessary spending. 
+Speaker 03 advises understanding the purpose of digitization and collaborating with colleagues for a better outcome. 
+Speaker 04 suggests thinking big and being brave, as well as talking to technology vendors to achieve desired outcomes.
+```
