@@ -40,7 +40,7 @@ def merge_sentence(spk_text):
             text_cache = [(seg, spk, text)]
             pre_spk = spk
 
-        elif text[-1] in PUNC_SENT_END:
+        elif text and len(text) > 0 and text[-1] in PUNC_SENT_END:
             text_cache.append((seg, spk, text))
             merged_spk_text.append(merge_cache(text_cache))
             text_cache = []
