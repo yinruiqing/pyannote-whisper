@@ -17,7 +17,7 @@ def cli():
     from whisper import available_models
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("audio", nargs="+", type=str, help="audio file(s) to transcribe")
+    parser.add_argument("audio", nargs="+", type=str, help="audio file(s) of WAVE (.wav) format to transcribe")
     parser.add_argument("--model", default="small", choices=available_models(), help="name of the Whisper model to use")
     parser.add_argument("--model_dir", type=str, default=None,
                         help="the path to save model files; uses ~/.cache/whisper by default")
@@ -99,7 +99,10 @@ def cli():
     if diarization:
         from pyannote.audio import Pipeline
         pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization",
-                                            use_auth_token="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")
+                                            use_auth_token="HUGGINGFACE_CO_ACCOUNT_ACCESS_TOKEN")
+        # create huggingface.co free account and create your access token ^ with access to read repos
+        # also you will need to apply access forms for certain repos to get access to them (it's free too)
+        # you will see which repos requires this additional actions as access errors when try to use the program 
 
     for audio_path in args.pop("audio"):
         result = transcribe(model, audio_path, temperature=temperature,**args)
